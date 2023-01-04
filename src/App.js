@@ -3,8 +3,10 @@ import Die from './components/Die';
 import {nanoid} from 'nanoid';
 
 function App() {
+  // New state for all ten dice
   const [dice, setDice] = React.useState(allNewDice())
 
+  // Generate info for one die object
   function generateNewDie() {
     return {
       value: Math.ceil(Math.random() * 6),
@@ -13,6 +15,7 @@ function App() {
     }
   }
 
+  // Create an array of 10 objects representing the 10 dice
   function allNewDice() {
     const newDice = [];
     for (let i = 0; i < 10; i++) {
@@ -21,6 +24,7 @@ function App() {
     return newDice
   }
   
+  // Roll the dice that are not "held", aka the white dice
   function rollDice() {
     setDice(prevDice => prevDice.map(die => {
       return die.isHeld === true ?
@@ -29,6 +33,7 @@ function App() {
     }))
   }
 
+  // Update dice array isHeld value for any dice that are frozen/held
   function holdDice(id) {
     setDice(prevDice => prevDice.map(die => {
       return die.id === id ? 
@@ -37,6 +42,7 @@ function App() {
     }))
   }
 
+  // Create an array of the ten dice components to be rendered
   const diceElements = dice.map(die => (
     <Die 
       key={die.id} 
