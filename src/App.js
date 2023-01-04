@@ -11,14 +11,14 @@ function App() {
   // Create state to represent if user has won the game or not
   const [tenzies, setTenzies] = useState(false)
 
-  // Create effect that runs when dice state array changes
+  // Create effect that runs when dice state array changes to check for win condition
   useEffect(() => {
     const firstNumber = dice[0].value;
     const allHeld = dice.every(die => die.isHeld)
     const allSameValue = dice.every(die => die.value == firstNumber)
+    // check for win condition
     if (allHeld && allSameValue) {
       setTenzies(true)
-      console.log("You won!")
     }
   }, [dice])
 
@@ -41,12 +41,19 @@ function App() {
   }
   
   // Roll the dice that are not "held", aka the white dice
+  // Reset game if win conditions were met
   function rollDice() {
-    setDice(prevDice => prevDice.map(die => {
-      return die.isHeld === true ?
+    if (!tenzies) {
+      setDice(prevDice => prevDice.map(die => {
+        return die.isHeld === true ?
         die : 
         generateNewDie()
-    }))
+      }))
+    } 
+    else {
+      setTenzies(false) 
+      setDice(allNewDice())
+  }
   }
 
   // Update dice array isHeld value for any dice that are frozen/held
